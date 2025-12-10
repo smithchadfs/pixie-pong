@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 3 Assignemt: Pixie Pong</title>
+</head>
+<body>
+    <game id="game"></game>
+
+    <!-- Load in the PixiJs -->
+     <script src="https://pixijs.download/release/pixi.min.js"></script>
+
+     <!-- ES6 Code goes here as a type="module" -->
+      <script type="module">
+
+        // Create a new PixiJS application instance
+        const app = new PIXI.Application();
+
+        // Call an asynchronous method on PixiJS
+        await app.init({
+            backgroundColor: '#000080',
+            width: 800,
+            height: 800
+        });
+
+        // Tell PixiJS what HTMLElement to show
+        document.getElementById('game').appendChild(app.canvas);
+
+        // Create a new graphic instance and variable to rep circle on screen
+        const circle = new PIXI.Graphics()
+
+        // Set circle fill color
+        circle.beginFill('#fcbe37')
+
+        // Tell Pixi to draw circle
+        // The three argument needed are: X, Y, and radius size
+        circle.drawCircle(5, 5, 5)
+
+        // End fill
+        circle.endFill()
+
+        // Add circle to game stage
+        app.stage.addChild(circle)
+      </script>
+</body>
+</html>
