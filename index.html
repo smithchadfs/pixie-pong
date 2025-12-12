@@ -25,7 +25,7 @@
         });
 
         // Tell PixiJS what HTMLElement to show
-        document.getElementById('game').appendChild(app.canvas);
+document.getElementById('game').appendChild(app.canvas);
 
         // Create a new graphic instance and variable to rep circle on screen
         const circle = new PIXI.Graphics()
@@ -40,8 +40,114 @@
         // End fill
         circle.endFill()
 
+        // Create a new graphic instances and variables to rep borders
+        const topBorder = new PIXI.Graphics()
+        topBorder.beginFill('#ff0000')
+        topBorder.drawRect(0, 0, 800, 5)
+        topBorder.endFill()
+        app.stage.addChild(topBorder)
+
+        const rightBorder = new PIXI.Graphics()
+        rightBorder.beginFill('#ff0000')
+        rightBorder.drawRect(795, 0, 5, 800)
+        rightBorder.endFill()
+        app.stage.addChild(rightBorder)
+
+        const bottomBorder = new PIXI.Graphics()
+        bottomBorder.beginFill('#ff0000')
+        bottomBorder.drawRect(0, 795, 800, 5)
+        bottomBorder.endFill()
+        app.stage.addChild(bottomBorder)
+
+        const leftBorder = new PIXI.Graphics()
+        leftBorder.beginFill('#ff0000')
+        leftBorder.drawRect(0, 0, 5, 800)
+        leftBorder.endFill()
+        app.stage.addChild(leftBorder)
+
+        // Tell circle where to spawn on game display
+        circle.x = 450
+        circle.y = 400
+
+        // Set up tracking variables
+        let topHit = false
+        let bottomHit = false
+        let leftHit = false
+        let rightHit = false
+
+         // Create variable that holds the resolve
+        let resolveGame;
+        // Declare Promise and create new Promise instance
+        const gamePromise = new Promise((resolve) => {
+            resolveGame = resolve;
+        })
+
+        gamePromise.then(() => {
+            alert('All hits complete!')
+            app.ticker.stop()
+        })
+
+        // Set velocity and direction
+        let xv = 1
+        let yv = 1
+
         // Add circle to game stage
         app.stage.addChild(circle)
+
+       
+
+        // Add a refresh engine to power circle movement
+        app.ticker.add(() => {
+            // add hit detection
+            if (circle.x >= 800) {
+                rightHit = true
+                xv = -xv
+                // alert('Right border hit')
+                rightBorder.beginFill('#000000')
+                rightBorder.drawRect(795, 0, 5, 800)
+                rightBorder.endFill()
+                app.stage.addChild(rightBorder)
+            } 
+
+            if (circle.x <= 0) {
+                leftHit = true
+                xv = -xv
+                // alert('Left border hit')
+                leftBorder.beginFill('#000000')
+                leftBorder.drawRect(0, 0, 5, 800)
+                leftBorder.endFill()
+                app.stage.addChild(leftBorder)
+            }
+
+            if (circle.y >= 800) {
+                bottomHit = true
+                yv = -yv
+                // alert('Bottom border hit')
+                bottomBorder.beginFill('#000000')
+                bottomBorder.drawRect(0, 795, 800, 5)
+                bottomBorder.endFill()
+                app.stage.addChild(bottomBorder)
+            }
+
+            if (circle.y <= 0) {
+                topHit = true
+                yv = -yv
+                // alert('Top border hit')
+                topBorder.beginFill('#000000')
+                topBorder.drawRect(0, 0, 800, 5)
+                topBorder.endFill()
+                app.stage.addChild(topBorder)
+            }
+
+            if (rightHit === true && leftHit === true && bottomHit === true && topHit === true) {
+                resolveGame()
+            }
+            // frame update/refresh
+            // move circle one pixel to the right
+            circle.x += xv
+            // move circle down one pixel
+            circle.y += yv
+        })
       </script>
 </body>
 </html>
